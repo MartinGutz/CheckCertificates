@@ -42,6 +42,12 @@ function ParseCertExpirationDate($dateString)
     return $parsedDate
 }
 
+function GetDaysCertIsStillValid($date)
+{
+    $currentDate = Get-Date
+    return (New-TimeSpan -Start $currentDate -End (ParseCertExpirationDate $site.certExpirationDate)).Days
+}
+
 
 $siteList = @()
 
@@ -60,8 +66,11 @@ foreach($site in $siteList)
     $siteExpirationDates += $siteExpirationInformation
 }
 
+
 foreach($site in $siteExpirationDates)
 {
     Write-Host "Site:" $site.siteName
-    Write-Host "Date:" (ParseCertExpirationDate $site.certExpirationDate)
+    Write-Host "Expiration Date:" (ParseCertExpirationDate $site.certExpirationDate)
+    Write-Host "Valid Days:" (GetDaysCertIsStillValid $dateDifference)
 }
+
