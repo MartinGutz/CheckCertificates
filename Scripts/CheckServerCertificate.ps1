@@ -42,7 +42,20 @@ $siteList = @()
 $siteList += "https://www.google.com"
 $siteList += "https://www.cnn.com"
 
+$siteExpirationDates = @()
+
 foreach($site in $siteList)
 {
-    Get-PublicKey $site
+    $validDate = Get-PublicKey $site
+    $siteExpirationInformation =[pscustomobject]@{
+        siteName = $site
+        certExpirationDate = $validDate
+    }
+    $siteExpirationDates += $siteExpirationInformation
+}
+
+foreach($site in $siteExpirationDates)
+{
+    Write-Host "Site:" $site.siteName
+    Write-Host "Date:" $site.certExpirationDate
 }
