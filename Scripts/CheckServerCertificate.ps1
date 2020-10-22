@@ -33,7 +33,6 @@ function Get-PublicKey
 
     #The ServicePoint object should now contain the Certificate for the site.
     $servicePoint = $request.ServicePoint
-    $key = $servicePoint.Certificate.GetPublicKey()
     return $servicePoint.Certificate.GetExpirationDateString()
 }
 
