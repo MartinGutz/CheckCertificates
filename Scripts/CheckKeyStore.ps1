@@ -53,6 +53,7 @@ function GetTrustStoreInformation()
             $trustStoreCertificate =[pscustomobject]@{
                 alias = $certificateAlias
                 validDate = $certificateValidDate
+                validDays = (GetDaysCertIsStillValid $certificateValidDate)
             }
             $certificateList += $trustStoreCertificate
         }
@@ -65,6 +66,6 @@ foreach($certificate in $certificateList)
 {
     Write-Host $certificate.alias
     Write-Host $certificate.validDate
-    Write-Host (GetDaysCertIsStillValid $certificate.validDate)
+    Write-Host $certificate.validDays
 }
 
