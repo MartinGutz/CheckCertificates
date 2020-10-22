@@ -4,19 +4,34 @@ function GetTrustStoreInformation()
     $TrustStoreLocation = "C:\Program Files\Java\jre1.8.0_261\lib\security\cacerts"
     $Password = "changeit"
     $results = $(& $KeyToolCommand -list -keystore $TrustStoreLocation -storepass "$Password" -v)
-    Write-Host $results
+    
+    $certificateList = @()
+
+    $certificateAlias = ""
+    $certificateValidDate = ""
     foreach($result in $results)
     {
         if($result.Contains("Alias name:"))
         {
-            Write-Host $result
+            $certificateAlias = $result
         }
         if($result.Contains("Valid from:"))
         {
-            Write-Host $result
+            $certificateValidDate = $result
+            $trustStoreCertificate =[pscustomobject]@{
+                alias = $certificateAlias
+                validDate = $certificateValidDate
+            }
+            $certificateList += $trustStoreCertificate
         }
     }   
+    return $certificateList
 }
 
-GetTrustStoreInformation
+$certificateList = GetTrustStoreInformation
+foreach($certificate in $certificateList)
+{
+    Write-Host $certificate.alias
+    Write-Host $certificate.validDate
+}
 
