@@ -23,6 +23,13 @@ function ParseExpirationDate($string)
     [datetime]$parsedDate = $expirationDate
     return $parsedDate
 }
+
+function GetDaysCertIsStillValid($date)
+{
+    $currentDate = Get-Date
+    return (New-TimeSpan -Start $currentDate -End $date).Days
+}
+
 function GetTrustStoreInformation()
 {
     $KeyToolCommand = "C:\Program Files\Java\jre1.8.0_261\bin\keytool.exe"
@@ -58,5 +65,6 @@ foreach($certificate in $certificateList)
 {
     Write-Host $certificate.alias
     Write-Host $certificate.validDate
+    Write-Host (GetDaysCertIsStillValid $certificate.validDate)
 }
 
