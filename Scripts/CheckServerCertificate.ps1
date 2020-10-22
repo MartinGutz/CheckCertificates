@@ -45,7 +45,7 @@ function ParseCertExpirationDate($dateString)
 function GetDaysCertIsStillValid($date)
 {
     $currentDate = Get-Date
-    return (New-TimeSpan -Start $currentDate -End (ParseCertExpirationDate $site.certExpirationDate)).Days
+    return (New-TimeSpan -Start $currentDate -End $date).Days
 }
 
 
@@ -59,9 +59,11 @@ $siteExpirationDates = @()
 foreach($site in $siteList)
 {
     $validDate = Get-PublicKey $site
+    $certExpirationDate = (ParseCertExpirationDate $validDate)
     $siteExpirationInformation =[pscustomobject]@{
         siteName = $site
-        certExpirationDate = $validDate
+        certExpirationDate =  $certExpirationDate
+        validDays = (GetDaysCertIsStillValid $certExpirationDate)
     }
     $siteExpirationDates += $siteExpirationInformation
 }
@@ -70,7 +72,7 @@ foreach($site in $siteList)
 foreach($site in $siteExpirationDates)
 {
     Write-Host "Site:" $site.siteName
-    Write-Host "Expiration Date:" (ParseCertExpirationDate $site.certExpirationDate)
-    Write-Host "Valid Days:" (GetDaysCertIsStillValid $dateDifference)
+    Write-Host "Expiration Date:" $site.certExpirationDate
+    Write-Host "Valid Days:" $site.validDays
 }
 
