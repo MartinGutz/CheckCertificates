@@ -37,4 +37,12 @@ function Get-PublicKey
     return $servicePoint.Certificate.GetExpirationDateString()
 }
 
-Get-PublicKey -Uri "https://www.google.com"
+$siteList = @()
+
+$siteList += "https://www.google.com"
+$siteList += "https://www.cnn.com"
+
+foreach($site in $siteList)
+{
+    Get-PublicKey $site
+}
