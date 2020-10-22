@@ -17,7 +17,7 @@ function GetTrustStoreInformation()
         }
         if($result.Contains("Valid from:"))
         {
-            $certificateValidDate = $result
+            $certificateValidDate = $result.Substring(48)
             $trustStoreCertificate =[pscustomobject]@{
                 alias = $certificateAlias
                 validDate = $certificateValidDate
