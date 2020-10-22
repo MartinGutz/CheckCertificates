@@ -19,11 +19,8 @@ function GetMonthNumber($monthInitials)
 function ParseExpirationDate($string)
 {
     $dateSubstring = $string.Substring(48)
-    Write-Host $dateSubstring
     $expirationDate = ( GetMonthNumber $dateSubstring.SubString(4,3)) + "/" + $dateSubstring.SubString(8,2) + "/" + $dateSubstring.SubString(24,4)
-    Write-Host $expirationDate
     [datetime]$parsedDate = $expirationDate
-    Write-Host $parsedDate
     return $parsedDate
 }
 function GetTrustStoreInformation()

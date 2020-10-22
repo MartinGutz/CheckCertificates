@@ -36,6 +36,13 @@ function Get-PublicKey
     return $servicePoint.Certificate.GetExpirationDateString()
 }
 
+function ParseCertExpirationDate($dateString)
+{
+    [datetime]$parsedDate = $dateString
+    return $parsedDate
+}
+
+
 $siteList = @()
 
 $siteList += "https://www.google.com"
@@ -56,5 +63,5 @@ foreach($site in $siteList)
 foreach($site in $siteExpirationDates)
 {
     Write-Host "Site:" $site.siteName
-    Write-Host "Date:" $site.certExpirationDate
+    Write-Host "Date:" (ParseCertExpirationDate $site.certExpirationDate)
 }
